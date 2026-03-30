@@ -20,6 +20,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
   final TextEditingController _confirmPasswordController = TextEditingController();
 
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold( // 👨 Parent
@@ -78,16 +81,29 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 16),
               
               // 🔒 Password Field
-              // Uses a regex pattern to validate email format more robustly.
-              // Ensures the email contains text before and after '@' and 
-              // includes a domain.
+              // Includes validation for minimum length and a visibility toggle
+              // so users can view or hide their password input.
               TextFormField(
                 controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
+                obscureText: !_isPasswordVisible,
+                decoration: InputDecoration(
                   labelText: 'Password',
-                  prefixIcon: Icon(Icons.lock),
-                  border: OutlineInputBorder(),
+                  prefixIcon: const Icon(Icons.lock),
+                  border: const OutlineInputBorder(),
+
+                  // 👇 toggle visibility icon
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                  ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -101,16 +117,32 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               const SizedBox(height: 24),
 
+              // Ensures the user re-enters the same password and provides
+              // a visibility toggle for better usability.
               TextFormField(
                 controller: _confirmPasswordController,
-                obscureText: true,
-                decoration: const InputDecoration(
+                obscureText: !_isConfirmPasswordVisible,
+                decoration: InputDecoration(
                   labelText: 'Confirm Password',
-                  prefixIcon: Icon(Icons.lock),
-                  border: OutlineInputBorder(),
+                  prefixIcon: const Icon(Icons.lock),
+                  border: const OutlineInputBorder(),
+
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isConfirmPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isConfirmPasswordVisible =
+                            !_isConfirmPasswordVisible;
+                      });
+                    },
+                  ),
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty){
+                  if (value == null || value.isEmpty) {
                     return 'Please confirm your password';
                   }
                   if (value != _passwordController.text) {
