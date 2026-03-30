@@ -23,6 +23,23 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
 
+  DateTime? _selectedDate;
+
+  Future<void> _pickDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2000),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold( // 👨 Parent
@@ -80,6 +97,27 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               const SizedBox(height: 16),
               
+              // 🎂 Birthday Field
+              // Opens a date picker and stores the selected date
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: _selectedDate == null
+                      ? 'Select your birthday'
+                      : '${_selectedDate!.month}/${_selectedDate!.day}/${_selectedDate!.year}',
+                  prefixIcon: const Icon(Icons.calendar_today),
+                  border: const OutlineInputBorder(),
+                ),
+                onTap: () => _pickDate(context),
+                validator: (value) {
+                  if (_selectedDate == null) {
+                    return 'Please select your birthday';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+
               // 🔒 Password Field
               // Includes validation for minimum length and a visibility toggle
               // so users can view or hide their password input.
