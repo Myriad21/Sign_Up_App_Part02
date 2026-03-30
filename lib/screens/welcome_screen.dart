@@ -24,7 +24,7 @@ class WelcomeScreen extends StatelessWidget {
               AnimatedTextKit(
                 animatedTexts: [
                   TypewriterAnimatedText(
-                    'Welcome to Signup Adventure!',
+                    'Welcome to your Signup Adventure!',
                     textStyle: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -33,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
                     speed: const Duration(milliseconds: 80),
                   ),
                 ],
-                totalRepeatCount: 1,
+                totalRepeatCount: 1,  // Plays animation once
               ),
               const SizedBox(height: 20),
               const Text(
@@ -41,6 +41,8 @@ class WelcomeScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18),
               ),
+
+              // Button to navigate to the signup screen
               const SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
