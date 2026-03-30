@@ -125,12 +125,12 @@ class _SignupScreenState extends State<SignupScreen> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    String firstName =  _nameController.text.trim().split(' ').first;
-
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => WelcomePage(firstName: firstName),
+                        builder: (context) => SuccessScreen(
+                          userName: _nameController.text,
+                        ),
                       ),
                     );
                   }
