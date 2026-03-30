@@ -22,6 +22,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
+  bool _isLoading = false;
 
   DateTime? _selectedDate;
 
@@ -193,8 +194,16 @@ class _SignupScreenState extends State<SignupScreen> {
               
               // 🚀 Sign Up Button
               ElevatedButton(
-                onPressed: () {
+                onPressed: _isLoading ? null : () async {
                   if (_formKey.currentState!.validate()) {
+                    setState(() {
+                      _isLoading = true;
+                    });
+
+                    await Future.delayed(const Duration(seconds: 2));
+
+                    if (!mounted) return;
+
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -209,12 +218,20 @@ class _SignupScreenState extends State<SignupScreen> {
                   backgroundColor: const Color.fromARGB(255, 185, 112, 198),
                   padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                 ),
-                child: const Text(
-                  'Sign Up',
-                  style: TextStyle(fontSize: 18),
-                ),
+                child: _isLoading
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Text(
+                      'Sign Up',
+                      style: TextStyle(fontSize: 18),
+                    ),
               ),
-
             ],
           ),
         ),
